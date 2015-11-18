@@ -1,0 +1,42 @@
+{
+  "name": "node-marble",
+  "version": "0.0.1",
+  "description": "Simple linear process queue for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "blanket": {
+      "pattern": "lib",
+      "data-cover-never": "node_modules"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/joostvunderink/node-marble"
+  },
+  "keywords": [
+    "job",
+    "jobs",
+    "cron",
+    "delayed",
+    "scheduler",
+    "runner"
+  ],
+  "author": "Joost Vunderink <joost@vunderink.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joostvunderink/node-marble/issues"
+  },
+  "dependencies": {
+    "agenda": "^0.7.2",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.2.3",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "mocha": "^2.2.5",
+    "mockgoose": "^4.0.2",
+    "should": "^6.0.3"
+  }
+}
