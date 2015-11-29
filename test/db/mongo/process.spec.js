@@ -28,7 +28,9 @@ describe('Mongoose processing a job', function() {
     var jobData = testdata.jobData1;
     db.createJob(jobData)
     .then(function(createdJob) {
-      return db.stepOk(createdJob);
+      return db.stepOk({
+        jobId: createdJob.id
+      });
     })
     .then(function() {
       return Q(Job.find({}).exec());
@@ -56,7 +58,7 @@ describe('Mongoose processing a job', function() {
       let step = job.steps[0];
 
       step.status.should.equal(common.status.ok);
-      
+
       done();
     })
     .catch(function(err) {
