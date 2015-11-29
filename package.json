@@ -30,6 +30,7 @@
   "dependencies": {
     "agenda": "^0.7.2",
     "lodash": "^3.10.1",
+    "moment": "^2.10.6",
     "mongoose": "^4.2.3",
     "q": "^1.4.1"
   },
