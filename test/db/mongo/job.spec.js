@@ -28,7 +28,7 @@ describe('Mongoose Job', function() {
   });
 
   describe('creation', function() {
-    it('should create a job with parent and children', function(done) {
+    it('should create a job with steps', function(done) {
       var jobData = testdata.jobData1;
       db.createJob(jobData)
       .then(function(job) {
@@ -73,4 +73,69 @@ describe('Mongoose Job', function() {
     });
 
   });
+
+  describe('methods', function() {
+    describe('obj', function() {
+      it('should work for job with no steps done yet', function(done) {
+        var jobData = testdata.jobData1;
+        db.createJob(jobData)
+        .then(function(job) {
+          return Q(Job.findOne({ _id: job.id }).exec());
+        })
+        .then(function(job) {
+          let expected = {
+            id    : job._id,
+            data  : jobData.data,
+            status: common.status.new,
+            step: {
+              action: jobData.steps[0].action,
+              data  : jobData.steps[0].data
+            }
+          };
+
+          job.obj().should.eql(expected);
+
+          done();
+        })
+        .catch(function(err) {
+          console.error(err);
+          done(err);
+        });
+      });
+      it('should work for job with all steps done', function(done) {
+        let jobData = testdata.jobData1;
+        let jobId;
+        db.createJob(jobData)
+        .then(function(job) {
+          jobId = job.id;
+          return Q(Job.findOne({ _id: jobId }).exec());
+        })
+        .then(function(job) {
+          job.currentStepIndex = 3;
+          job.status = common.status.ok;
+          return job.qsave();
+        })
+        .then(function(job) {
+          return Q(Job.findOne({ _id: jobId }).exec());
+        })
+        .then(function(job) {
+          let expected = {
+            id    : job._id,
+            data  : jobData.data,
+            status: common.status.ok,
+            step: null
+          };
+
+          job.obj().should.eql(expected);
+
+          done();
+        })
+        .catch(function(err) {
+          console.error(err);
+          done(err);
+        });
+      });
+    });
+  });
+
 });
