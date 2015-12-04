@@ -90,7 +90,8 @@ describe('Mongoose Job', function() {
             step: {
               action: jobData.steps[0].action,
               data  : jobData.steps[0].data
-            }
+            },
+            stepIndex: 0,
           };
 
           job.obj().should.eql(expected);
