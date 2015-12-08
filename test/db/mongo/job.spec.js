@@ -136,6 +136,42 @@ describe('Mongoose Job', function() {
           done(err);
         });
       });
+      it('should work for job with error status', function(done) {
+        let jobData = testdata.jobData1;
+        let jobId;
+        let errorMessage = 'timeout reaching database';
+        db.createJob(jobData)
+        .then(function(job) {
+          jobId = job.id;
+          return Q(Job.findOne({ _id: jobId }).exec());
+        })
+        .then(function(job) {
+          job.currentStepIndex = 3;
+          job.status = common.status.error;
+          job.errorMessage = errorMessage;
+          return job.qsave();
+        })
+        .then(function(job) {
+          return Q(Job.findOne({ _id: jobId }).exec());
+        })
+        .then(function(job) {
+          let expected = {
+            id    : job._id,
+            data  : jobData.data,
+            status: common.status.error,
+            error : errorMessage,
+            step: null
+          };
+
+          job.obj().should.eql(expected);
+
+          done();
+        })
+        .catch(function(err) {
+          console.error(err);
+          done(err);
+        });
+      });
     });
   });
 
