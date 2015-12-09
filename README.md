@@ -1,5 +1,9 @@
 # Marble - a simply queueing system for linear jobs
 
+## OUTDATED!
+
+This is outdated documentation. Please do not use this module yet. It will soon be available on npm.
+
 ```
     var Marble = require('marble');
     var marble = new Marble();
