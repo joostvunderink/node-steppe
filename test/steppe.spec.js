@@ -7,14 +7,14 @@ let mockgoose = require('mockgoose');
 mockgoose(mongoose);
 
 let db = require('../lib/db/mongo');
-db.connect({ url: 'mongodb://localhost/marble_unittest' });
+db.connect({ url: 'mongodb://localhost/steppe_unittest' });
 
-let Marble = require('../lib/marble');
+let Steppe = require('../lib/steppe');
 let Q = require('q');
 let common = require('../lib/common');
 
 var log4js = require('log4js');
-var logger = log4js.getLogger('marble.spec');
+var logger = log4js.getLogger('steppe.spec');
 
 let queueName = 'test1';
 let jobArgs = {
@@ -39,7 +39,7 @@ let jobArgs = {
 describe('queue handlers', function() {
   it('should call the queue handlers with the right data', function(done) {
     // given
-    let marble = new Marble({ logger: logger });
+    let steppe = new Steppe({ logger: logger });
 
     let stepHandlerStub = sinon.stub();
     stepHandlerStub.returns(Q.resolve());
@@ -47,7 +47,7 @@ describe('queue handlers', function() {
     let jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
-    marble.defineQueue({
+    steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
       jobHandler : jobHandlerStub,
@@ -58,15 +58,15 @@ describe('queue handlers', function() {
     .then(function(job) {
       // when
       // step 1
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 2
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 3 + job end
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // then
@@ -102,7 +102,7 @@ describe('queue handlers', function() {
 
   it('should call the queue handlers with the right data for fatal error', function(done) {
     // given
-    let marble = new Marble({ logger: logger });
+    let steppe = new Steppe({ logger: logger });
 
     let errorMsg = 'no more bananas';
     let stepHandlerStub = sinon.stub();
@@ -111,7 +111,7 @@ describe('queue handlers', function() {
     let jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
-    marble.defineQueue({
+    steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
       jobHandler : jobHandlerStub,
@@ -122,15 +122,15 @@ describe('queue handlers', function() {
     .then(function(job) {
       // when
       // step 1: try 1, error
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 1: try 2, error
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 1: try 3, error, job end
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // then
@@ -167,7 +167,7 @@ describe('queue handlers', function() {
 
   it('should call the queue handlers with the right data for non-fatal error', function(done) {
     // given
-    let marble = new Marble({ logger: logger });
+    let steppe = new Steppe({ logger: logger });
 
     let errorMsg = 'no more bananas';
     let stepHandlerStub = sinon.stub();
@@ -177,7 +177,7 @@ describe('queue handlers', function() {
     let jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
-    marble.defineQueue({
+    steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
       jobHandler : jobHandlerStub,
@@ -188,19 +188,19 @@ describe('queue handlers', function() {
     .then(function(job) {
       // when
       // step 1: try 1, error
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 1: try 2,, success
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 2
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // step 3
-      return marble.findAndProcessJob(queueName);
+      return steppe.findAndProcessJob(queueName);
     })
     .then(function(job) {
       // then

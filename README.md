@@ -1,14 +1,14 @@
-# Marble - a simply queueing system for linear jobs
+# Steppe - a simply queueing system for linear jobs
 
 ## OUTDATED!
 
 This is outdated documentation. Please do not use this module yet. It will soon be available on npm.
 
 ```
-    var Marble = require('marble');
-    var marble = new Marble();
+    var Steppe = require('steppe');
+    var steppe = new Steppe();
 
-    marble.configure({
+    steppe.configure({
         db: {
             type: 'mongo',
             uri: 'mongodb://localhost/testdb'
@@ -46,7 +46,7 @@ This is outdated documentation. Please do not use this module yet. It will soon 
     // This function is called either after the last child has been processed,
     // or after a child has errored in a fatal way.
     function handleParent(parentData) {
-        if (parentData.status === marble.status.error) {
+        if (parentData.status === steppe.status.error) {
             console.error('Error: %s', parentData.error);
         }
         else {
@@ -54,16 +54,16 @@ This is outdated documentation. Please do not use this module yet. It will soon 
         }
     }
 
-    marble.defineQueue({
+    steppe.defineQueue({
         name         : 'makePhotoAlbum',
         parentHandler: handleParent,
         childHandler : handleChild,
         period       : 'every 20 seconds'
     });
 
-    marble.start();
+    steppe.start();
 
-    marble.createJob({
+    steppe.createJob({
         queueName: 'makePhotoAlbum',
         parent: {
             url: 'http://photoalbums.example.net',

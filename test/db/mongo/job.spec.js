@@ -6,7 +6,7 @@ let mongoose = require('mongoose');
 let mockgoose = require('mockgoose');
 mockgoose(mongoose);
 let db = require('../../../lib/db/mongo');
-db.connect({ url: 'mongodb://localhost/marble_unittest' });
+db.connect({ url: 'mongodb://localhost/steppe_unittest' });
 
 let Q = require('q');
 let _ = require('lodash');
