@@ -1,17 +1,17 @@
 'use strict';
 
-let should = require('should');
+var should = require('should');
 
-let mongoose = require('mongoose');
-let mockgoose = require('mockgoose');
+var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
 mockgoose(mongoose);
-let db = require('../../../lib/db/mongo');
+var db = require('../../../lib/db/mongo');
 db.connect({ url: 'mongodb://localhost/steppe_unittest' });
 
-let Q = require('q');
-let Job = require('../../../lib/db/mongo/job.model');
-let common = require('../../../lib/common');
-let testdata = require('./testdata');
+var Q = require('q');
+var Job = require('../../../lib/db/mongo/job.model');
+var common = require('../../../lib/common');
+var testdata = require('./testdata');
 
 describe('Mongoose processing a job', function() {
   beforeEach(function(done) {
@@ -40,7 +40,7 @@ describe('Mongoose processing a job', function() {
     })
     .then(function(jobs) {
       jobs.should.be.an.Array.and.have.length(1);
-      let job = jobs[0];
+      var job = jobs[0];
 
       job.status.should.equal(common.status.working);
       job.queueName.should.equal(jobData.queueName);
@@ -57,7 +57,7 @@ describe('Mongoose processing a job', function() {
       job.numStepsProcessed.should.equal(1);
       job.numStepsErrored.should.equal(0);
 
-      let step = job.steps[0];
+      var step = job.steps[0];
 
       step.status.should.equal(common.status.ok);
 
@@ -87,7 +87,7 @@ describe('Mongoose processing a job', function() {
     })
     .then(function(jobs) {
       jobs.should.be.an.Array.and.have.length(1);
-      let job = jobs[0];
+      var job = jobs[0];
 
       job.status.should.equal(common.status.working);
       job.queueName.should.equal(jobData.queueName);
@@ -104,7 +104,7 @@ describe('Mongoose processing a job', function() {
       job.numStepsProcessed.should.equal(0);
       job.numStepsErrored.should.equal(0);
 
-      let step = job.steps[0];
+      var step = job.steps[0];
 
       step.status.should.equal(common.status.working);
       step.errorCount.should.equal(1);
@@ -150,7 +150,7 @@ describe('Mongoose processing a job', function() {
     })
     .then(function(jobs) {
       jobs.should.be.an.Array.and.have.length(1);
-      let job = jobs[0];
+      var job = jobs[0];
 
       job.status.should.equal(common.status.error);
       job.queueName.should.equal(jobData.queueName);
@@ -167,7 +167,7 @@ describe('Mongoose processing a job', function() {
       job.numStepsProcessed.should.equal(0);
       job.numStepsErrored.should.equal(0);
 
-      let step = job.steps[0];
+      var step = job.steps[0];
 
       step.status.should.equal(common.status.error);
       step.errorCount.should.equal(3);

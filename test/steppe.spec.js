@@ -1,23 +1,23 @@
 'use strict';
-let should = require('should');
-let sinon  = require('sinon');
+var should = require('should');
+var sinon  = require('sinon');
 
-let mongoose = require('mongoose');
-let mockgoose = require('mockgoose');
+var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
 mockgoose(mongoose);
 
-let db = require('../lib/db/mongo');
+var db = require('../lib/db/mongo');
 db.connect({ url: 'mongodb://localhost/steppe_unittest' });
 
-let Steppe = require('../lib/steppe');
-let Q = require('q');
-let common = require('../lib/common');
+var Steppe = require('../lib/steppe');
+var Q = require('q');
+var common = require('../lib/common');
 
 var log4js = require('log4js');
 var logger = log4js.getLogger('steppe.spec');
 
-let queueName = 'test1';
-let jobArgs = {
+var queueName = 'test1';
+var jobArgs = {
   queueName: queueName,
   data: { location: 'home' },
   steps: [
@@ -39,12 +39,12 @@ let jobArgs = {
 describe('queue handlers', function() {
   it('should call the queue handlers with the right data', function(done) {
     // given
-    let steppe = new Steppe({ logger: logger });
+    var steppe = new Steppe({ logger: logger });
 
-    let stepHandlerStub = sinon.stub();
+    var stepHandlerStub = sinon.stub();
     stepHandlerStub.returns(Q.resolve());
 
-    let jobHandlerStub  = sinon.stub();
+    var jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
     steppe.defineQueue({
@@ -102,13 +102,13 @@ describe('queue handlers', function() {
 
   it('should call the queue handlers with the right data for fatal error', function(done) {
     // given
-    let steppe = new Steppe({ logger: logger });
+    var steppe = new Steppe({ logger: logger });
 
-    let errorMsg = 'no more bananas';
-    let stepHandlerStub = sinon.stub();
+    var errorMsg = 'no more bananas';
+    var stepHandlerStub = sinon.stub();
     stepHandlerStub.returns(Q.reject({error: errorMsg}));
 
-    let jobHandlerStub  = sinon.stub();
+    var jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
     steppe.defineQueue({
@@ -167,14 +167,14 @@ describe('queue handlers', function() {
 
   it('should call the queue handlers with the right data for non-fatal error', function(done) {
     // given
-    let steppe = new Steppe({ logger: logger });
+    var steppe = new Steppe({ logger: logger });
 
-    let errorMsg = 'no more bananas';
-    let stepHandlerStub = sinon.stub();
+    var errorMsg = 'no more bananas';
+    var stepHandlerStub = sinon.stub();
     stepHandlerStub.onCall(0).returns(Q.reject({error: errorMsg}));
     stepHandlerStub.returns(Q.resolve());
 
-    let jobHandlerStub  = sinon.stub();
+    var jobHandlerStub  = sinon.stub();
     jobHandlerStub.returns(Q.resolve());
 
     steppe.defineQueue({

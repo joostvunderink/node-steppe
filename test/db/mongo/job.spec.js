@@ -1,18 +1,18 @@
 'use strict';
 
-let should = require('should');
+var should = require('should');
 
-let mongoose = require('mongoose');
-let mockgoose = require('mockgoose');
+var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
 mockgoose(mongoose);
-let db = require('../../../lib/db/mongo');
+var db = require('../../../lib/db/mongo');
 db.connect({ url: 'mongodb://localhost/steppe_unittest' });
 
-let Q = require('q');
-let _ = require('lodash');
-let Job = require('../../../lib/db/mongo/job.model');
-let common = require('../../../lib/common');
-let testdata = require('./testdata');
+var Q = require('q');
+var _ = require('lodash');
+var Job = require('../../../lib/db/mongo/job.model');
+var common = require('../../../lib/common');
+var testdata = require('./testdata');
 
 describe('Mongoose Job', function() {
   beforeEach(function(done) {
@@ -36,7 +36,7 @@ describe('Mongoose Job', function() {
       })
       .then(function(jobs) {
         jobs.should.be.an.Array.and.have.length(1);
-        let job = jobs[0];
+        var job = jobs[0];
 
         job.status   .should.equal(common.status.new);
         job.queueName.should.equal(jobData.queueName);
@@ -83,7 +83,7 @@ describe('Mongoose Job', function() {
           return Q(Job.findOne({ _id: job.id }).exec());
         })
         .then(function(job) {
-          let expected = {
+          var expected = {
             id    : job._id,
             data  : jobData.data,
             status: common.status.new,
@@ -104,8 +104,8 @@ describe('Mongoose Job', function() {
         });
       });
       it('should work for job with all steps done', function(done) {
-        let jobData = testdata.jobData1;
-        let jobId;
+        var jobData = testdata.jobData1;
+        var jobId;
         db.createJob(jobData)
         .then(function(job) {
           jobId = job.id;
@@ -120,7 +120,7 @@ describe('Mongoose Job', function() {
           return Q(Job.findOne({ _id: jobId }).exec());
         })
         .then(function(job) {
-          let expected = {
+          var expected = {
             id    : job._id,
             data  : jobData.data,
             status: common.status.ok,
@@ -137,9 +137,9 @@ describe('Mongoose Job', function() {
         });
       });
       it('should work for job with error status', function(done) {
-        let jobData = testdata.jobData1;
-        let jobId;
-        let errorMessage = 'timeout reaching database';
+        var jobData = testdata.jobData1;
+        var jobId;
+        var errorMessage = 'timeout reaching database';
         db.createJob(jobData)
         .then(function(job) {
           jobId = job.id;
@@ -155,7 +155,7 @@ describe('Mongoose Job', function() {
           return Q(Job.findOne({ _id: jobId }).exec());
         })
         .then(function(job) {
-          let expected = {
+          var expected = {
             id    : job._id,
             data  : jobData.data,
             status: common.status.error,
