@@ -7,19 +7,19 @@ module.exports = {
 function jobData1() {
   return {
     queueName: 'activities',
-    data: { location: 'home' },
+    jobData: { location: 'home' },
     steps: [
       {
-        action   : 'buy_fruit',
-        data     : { fruit: 'banana' },
+        action  : 'buy_fruit',
+        stepData: { fruit: 'banana' },
       },
       {
-        action   : 'eat_fruit',
-        data     : { fruit: 'apple' },
+        action  : 'eat_fruit',
+        stepData: { fruit: 'apple' },
       },
       {
-        action   : 'paint_house',
-        data     : { colour: 'red' },
+        action  : 'paint_house',
+        stepData: { colour: 'red' },
       },
     ]
   };

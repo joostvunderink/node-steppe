@@ -29,8 +29,8 @@ describe('Mongoose Job', function() {
 
   describe('creation', function() {
     it('should create a job with steps', function(done) {
-      var jobData = testdata.jobData1;
-      db.createJob(jobData)
+      var jobData1 = testdata.jobData1;
+      db.createJob(jobData1)
       .then(function(job) {
         return Q(Job.find({}).exec());
       })
@@ -39,8 +39,8 @@ describe('Mongoose Job', function() {
         var job = jobs[0];
 
         job.status   .should.equal(common.status.new);
-        job.queueName.should.equal(jobData.queueName);
-        job.data     .should.eql(jobData.data);
+        job.queueName.should.equal(jobData1.queueName);
+        job.data     .should.eql(jobData1.jobData);
 
         should.equal(job.startedAt,  null);
         should.equal(job.finishedAt, null);
@@ -49,7 +49,7 @@ describe('Mongoose Job', function() {
 
         job.errorMessage.should.equal('');
 
-        job.numSteps         .should.equal(jobData.steps.length);
+        job.numSteps         .should.equal(jobData1.steps.length);
         job.numStepsProcessed.should.equal(0);
         job.numStepsErrored  .should.equal(0);
         job.currentStepIndex .should.equal(0);
@@ -58,8 +58,8 @@ describe('Mongoose Job', function() {
 
         job.steps.forEach(function(step, i) {
           step.status      .should.equal(common.status.new);
-          step.action      .should.equal(jobData.steps[i].action);
-          step.data        .should.eql  (jobData.steps[i].data);
+          step.action      .should.equal(jobData1.steps[i].action);
+          step.data        .should.eql  (jobData1.steps[i].stepData);
           step.errorCount  .should.equal(0);
           step.errorMessage.should.equal('');
         });
@@ -77,19 +77,19 @@ describe('Mongoose Job', function() {
   describe('methods', function() {
     describe('obj', function() {
       it('should work for job with no steps done yet', function(done) {
-        var jobData = testdata.jobData1;
-        db.createJob(jobData)
+        var jobData1 = testdata.jobData1;
+        db.createJob(jobData1)
         .then(function(job) {
           return Q(Job.findOne({ _id: job.id }).exec());
         })
         .then(function(job) {
           var expected = {
-            id    : job._id,
-            data  : jobData.data,
-            status: common.status.new,
+            id     : job._id,
+            jobData: jobData1.jobData,
+            status : common.status.new,
             step: {
-              action: jobData.steps[0].action,
-              data  : jobData.steps[0].data
+              action  : jobData1.steps[0].action,
+              stepData: jobData1.steps[0].stepData
             },
             stepIndex: 0,
           };
@@ -104,9 +104,9 @@ describe('Mongoose Job', function() {
         });
       });
       it('should work for job with all steps done', function(done) {
-        var jobData = testdata.jobData1;
+        var jobData1 = testdata.jobData1;
         var jobId;
-        db.createJob(jobData)
+        db.createJob(jobData1)
         .then(function(job) {
           jobId = job.id;
           return Q(Job.findOne({ _id: jobId }).exec());
@@ -121,10 +121,10 @@ describe('Mongoose Job', function() {
         })
         .then(function(job) {
           var expected = {
-            id    : job._id,
-            data  : jobData.data,
-            status: common.status.ok,
-            step: null
+            id     : job._id,
+            jobData: jobData1.jobData,
+            status : common.status.ok,
+            step   : null
           };
 
           job.obj().should.eql(expected);
@@ -137,10 +137,10 @@ describe('Mongoose Job', function() {
         });
       });
       it('should work for job with error status', function(done) {
-        var jobData = testdata.jobData1;
+        var jobData1 = testdata.jobData1;
         var jobId;
         var errorMessage = 'timeout reaching database';
-        db.createJob(jobData)
+        db.createJob(jobData1)
         .then(function(job) {
           jobId = job.id;
           return Q(Job.findOne({ _id: jobId }).exec());
@@ -156,11 +156,11 @@ describe('Mongoose Job', function() {
         })
         .then(function(job) {
           var expected = {
-            id    : job._id,
-            data  : jobData.data,
-            status: common.status.error,
-            error : errorMessage,
-            step: null
+            id     : job._id,
+            jobData: jobData1.jobData,
+            status : common.status.error,
+            error  : errorMessage,
+            step   : null
           };
 
           job.obj().should.eql(expected);

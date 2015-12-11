@@ -19,19 +19,19 @@ var logger = log4js.getLogger('steppe.spec');
 var queueName = 'test1';
 var jobArgs = {
   queueName: queueName,
-  data: { location: 'home' },
+  jobData: { location: 'home' },
   steps: [
     {
-      data     : { fruit: 'banana' },
-      action     : 'buy_fruit',
+      stepData: { fruit: 'banana' },
+      action  : 'buy_fruit',
     },
     {
-      data     : { fruit: 'apple' },
-      action     : 'eat_fruit',
+      stepData: { fruit: 'apple' },
+      action  : 'eat_fruit',
     },
     {
-      data     : { colour: 'red' },
-      action     : 'paint_house',
+      stepData: { colour: 'red' },
+      action  : 'paint_house',
     },
   ]
 };

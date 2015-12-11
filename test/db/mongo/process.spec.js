@@ -44,7 +44,7 @@ describe('Mongoose processing a job', function() {
 
       job.status.should.equal(common.status.working);
       job.queueName.should.equal(jobData.queueName);
-      job.data.should.eql(jobData.data);
+      job.data.should.eql(jobData.jobData);
 
       job.startedAt.getTime().should.be.lessThan((new Date()).getTime());
       job.lockedUntil.getTime().should.be.lessThan((new Date()).getTime());
@@ -91,7 +91,7 @@ describe('Mongoose processing a job', function() {
 
       job.status.should.equal(common.status.working);
       job.queueName.should.equal(jobData.queueName);
-      job.data.should.eql(jobData.data);
+      job.data.should.eql(jobData.jobData);
 
       job.startedAt.getTime().should.be.lessThan((new Date()).getTime());
       job.lockedUntil.getTime().should.be.lessThan((new Date()).getTime());
@@ -154,7 +154,7 @@ describe('Mongoose processing a job', function() {
 
       job.status.should.equal(common.status.error);
       job.queueName.should.equal(jobData.queueName);
-      job.data.should.eql(jobData.data);
+      job.data.should.eql(jobData.jobData);
 
       job.startedAt.getTime().should.be.lessThan((new Date()).getTime());
       job.lockedUntil.getTime().should.be.lessThan((new Date()).getTime());
