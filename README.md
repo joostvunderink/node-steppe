@@ -2,13 +2,11 @@
 
 ## OUTDATED!
 
-This is outdated documentation. Please do not use this module yet. It will soon be available on npm.
+This is outdated documentation. Please do not use this module yet.
 
 ```
     var Steppe = require('steppe');
-    var steppe = new Steppe();
-
-    steppe.configure({
+    var steppe = new Steppe({
         db: {
             type: 'mongo',
             uri: 'mongodb://localhost/testdb'
@@ -16,14 +14,22 @@ This is outdated documentation. Please do not use this module yet. It will soon 
 
     });
 
-    // This function returns a promise.
-    function handleChild(childData, parentData) {
-        // Generate a promise with your favourite promise library.
-        var promise = ...;
+    // One-time setup, at the start of your app.
 
-        doStuff(childData, parentData)
+    // The function that handles a step returns a promise to indicate
+    // whether the step has been handled successfully or not.
+    function handleStep(data) {
+        var stepData = data.stepData; // The data of this specific step.
+        var jobData  = data.jobData;  // The data of the job. The same for each step.
+        var action   = data.action;   // The action of the step.
+
+        // Generate a promise with your favourite promise library.
+        var promise = createPromise();
+
+        // Perform your
+        doStuff(action, stepData, jobData)
         .then(function(result) {
-            promise.resolve(result);
+            promise.resolve();
         })
         .catch(function(error) {
             if (error === 'everything went wrong') {
@@ -55,38 +61,47 @@ This is outdated documentation. Please do not use this module yet. It will soon 
     }
 
     steppe.defineQueue({
-        name         : 'makePhotoAlbum',
-        parentHandler: handleParent,
-        childHandler : handleChild,
-        period       : 'every 20 seconds'
+        name       : 'makePhotoAlbum',
+        stepHandler: handleStep,
+        jobFinished: jobFinished,
+        period     : 'every 20 seconds'
     });
 
     steppe.start();
 
+    // Now you can create jobs that will be handled.
+
     steppe.createJob({
         queueName: 'makePhotoAlbum',
-        parent: {
+        jobData: {
             url: 'http://photoalbums.example.net',
             auth_token: '1751FC0703C943D8904DAFCAD6F5814941CD1',
         },
-        children: [
+        steps: [
             {
-                type: 'createPhotoAlbum',
-                albumName: 'My Pets',
+                action: 'createPhotoAlbum',
+                stepData: {
+                    albumName: 'My Pets',
+                }
             },
             {
-                type: 'uploadPhoto',
-                filename: '/tmp/photo01.png',
-                description: 'my cat',
+                action: 'uploadPhoto',
+                stepData: {
+                    filename: '/tmp/photo01.png',
+                    description: 'My cat Mox',
+                }
             },
             {
-                type: 'uploadPhoto',
-                filename: '/tmp/photo02.png'
-                description: 'my dog',
+                action: 'uploadPhoto',
+                stepData: {
+                    filename: '/tmp/photo02.png'
+                    description: 'My dog Iwan',
+                }
             },
             {
-                type: 'publishAlbum'
+                action: 'publishAlbum'
+                stepData: { }
             }
         ]
     });
-
+```
