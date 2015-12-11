@@ -44,13 +44,13 @@ describe('queue handlers', function() {
     var stepHandlerStub = sinon.stub();
     stepHandlerStub.returns(Q.resolve());
 
-    var jobHandlerStub  = sinon.stub();
-    jobHandlerStub.returns(Q.resolve());
+    var jobFinishedStub  = sinon.stub();
+    jobFinishedStub.returns(Q.resolve());
 
     steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
-      jobHandler : jobHandlerStub,
+      jobFinished: jobFinishedStub,
       period     : '3 seconds',
     });
 
@@ -87,8 +87,8 @@ describe('queue handlers', function() {
         jobData : { location: 'home' },
       });
 
-      jobHandlerStub.callCount.should.equal(1);
-      jobHandlerStub.getCall(0).args[0].should.eql({
+      jobFinishedStub.callCount.should.equal(1);
+      jobFinishedStub.getCall(0).args[0].should.eql({
         status  : common.status.ok,
         jobData : { location: 'home' },
       });
@@ -108,13 +108,13 @@ describe('queue handlers', function() {
     var stepHandlerStub = sinon.stub();
     stepHandlerStub.returns(Q.reject({error: errorMsg}));
 
-    var jobHandlerStub  = sinon.stub();
-    jobHandlerStub.returns(Q.resolve());
+    var jobFinishedStub  = sinon.stub();
+    jobFinishedStub.returns(Q.resolve());
 
     steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
-      jobHandler : jobHandlerStub,
+      jobFinished: jobFinishedStub,
       period     : '3 seconds',
     });
 
@@ -151,8 +151,8 @@ describe('queue handlers', function() {
         jobData : { location: 'home' },
       });
 
-      jobHandlerStub.callCount.should.equal(1);
-      jobHandlerStub.getCall(0).args[0].should.eql({
+      jobFinishedStub.callCount.should.equal(1);
+      jobFinishedStub.getCall(0).args[0].should.eql({
         status  : common.status.error,
         jobData : { location: 'home' },
         error   : errorMsg,
@@ -174,13 +174,13 @@ describe('queue handlers', function() {
     stepHandlerStub.onCall(0).returns(Q.reject({error: errorMsg}));
     stepHandlerStub.returns(Q.resolve());
 
-    var jobHandlerStub  = sinon.stub();
-    jobHandlerStub.returns(Q.resolve());
+    var jobFinishedStub  = sinon.stub();
+    jobFinishedStub.returns(Q.resolve());
 
     steppe.defineQueue({
       name       : queueName,
       stepHandler: stepHandlerStub,
-      jobHandler : jobHandlerStub,
+      jobFinished: jobFinishedStub,
       period     : '3 seconds',
     });
 
@@ -227,8 +227,8 @@ describe('queue handlers', function() {
         jobData : { location: 'home' },
       });
 
-      jobHandlerStub.callCount.should.equal(1);
-      jobHandlerStub.getCall(0).args[0].should.eql({
+      jobFinishedStub.callCount.should.equal(1);
+      jobFinishedStub.getCall(0).args[0].should.eql({
         status  : common.status.ok,
         jobData : { location: 'home' },
       });
