@@ -32,7 +32,7 @@ A *queue* defines a type of job, with its accompanying handler functions. Each j
         // Generate a promise with your favourite promise library.
         var promise = createPromise();
 
-        // Perform your
+        // Perform the action necessary for this step.
         doStuff(action, stepData, jobData)
         .then(function(result) {
             promise.resolve();
@@ -62,7 +62,7 @@ A *queue* defines a type of job, with its accompanying handler functions. Each j
             console.error('Error: %s', job.error);
         }
         else {
-            console.info('Parent %s processed successfully', job.id);
+            console.info('Job %s processed successfully', job.id);
         }
     }
 
