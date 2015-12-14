@@ -72,7 +72,7 @@ A *queue* defines a type of job, with its accompanying handler functions. Each j
     var steppe = new Steppe({
         db: {
             type: 'mongo',
-            uri: 'mongodb://localhost/testdb'
+            url: 'mongodb://localhost/testdb'
         },
     });
 
