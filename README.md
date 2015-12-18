@@ -8,6 +8,10 @@ Add to that the problem of your `node.js` server restarting in the middle of suc
 
 Steppe is a module that helps you perform such tasks. You can create jobs with any number of steps, and define handler functions to handle steps. The state of the job, including any amount of additional custom data, is stored in a database for persistence. Each step can be retried a few times before it's considered to have errored.
 
+## Installation
+
+```npm install steppe```
+
 ## Terminology
 
 A *step* is a single task.
