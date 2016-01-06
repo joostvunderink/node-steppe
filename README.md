@@ -1,4 +1,4 @@
-# Steppe - a simply queueing system for linear jobs
+# Steppe - a simple queueing system for linear jobs
 
 ## Introduction
 
