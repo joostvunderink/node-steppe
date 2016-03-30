@@ -1,6 +1,6 @@
 {
   "name": "steppe",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple processor for jobs that have multiple steps",
   "main": "lib/steppe.js",
   "scripts": {
